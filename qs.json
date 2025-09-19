@@ -1,0 +1,95 @@
+{
+"id": "jee-physics-mock-01",
+"title": "JEE Main Physics: Mock Test yas",
+"type": "JEE",
+"description": "A short mock test covering key topics in JEE Main Physics, including Kinematics, Laws of Motion, and Electromagnetism.",
+"duration": 20,
+"questions": 5,
+"subjects": ["Physics"],
+"difficulty": "medium",
+"marks": 20,
+"negativeMarks": 1,
+"available": true,
+"questions_data": [
+{
+"id": 1,
+"subject": "Physics",
+"topic": "Kinematics",
+"questionText": "A particle starts from rest and accelerates at 2 m/s². What will be its velocity after 5 seconds?",
+"options": [
+"5 m/s",
+"10 m/s",
+"2.5 m/s",
+"20 m/s"
+],
+"correctAnswer": 1,
+"marks": 4,
+"negativeMarks": 1,
+"solution": "Solution: We use the first equation of motion: v = u + at.<br>Given: Initial velocity (u) = 0 m/s (starts from rest).<br>Acceleration (a) = 2 m/s².<br>Time (t) = 5 s.<br>Substituting the values: v = 0 + (2 * 5) = 10 m/s.<br>Therefore, the final velocity is 10 m/s."
+},
+{
+"id": 2,
+"subject": "Physics",
+"topic": "Laws of Motion",
+"questionText": "According to Newton's second law of motion, force is equal to:",
+"options": [
+"Mass times velocity",
+"Mass times acceleration",
+"Work divided by time",
+"Mass times displacement"
+],
+"correctAnswer": 1,
+"marks": 4,
+"negativeMarks": 1,
+"solution": "Solution: Newton's Second Law of Motion states that the force (F) acting on an object is equal to the mass (m) of the object multiplied by its acceleration (a).<br>The formula is F = ma.<br>This directly corresponds to 'Mass times acceleration'."
+},
+{
+"id": 3,
+"subject": "Physics",
+"topic": "Work, Energy, and Power",
+"questionText": "What is the kinetic energy of a 4 kg object moving at a speed of 5 m/s?",
+"options": [
+"20 Joules",
+"40 Joules",
+"50 Joules",
+"100 Joules"
+],
+"correctAnswer": 2,
+"marks": 4,
+"negativeMarks": 1,
+"solution": "Solution: The formula for kinetic energy (KE) is KE = 0.5 * m * v².<br>Given: Mass (m) = 4 kg.<br>Velocity (v) = 5 m/s.<br>Substituting the values: KE = 0.5 * 4 * (5 * 5) = 2 * 25 = 50 Joules.<br>Thus, the kinetic energy is 50 Joules."
+},
+{
+"id": 4,
+"subject": "Physics",
+"topic": "Electrostatics",
+"questionText": "The unit of electric charge is:",
+"options": [
+"Volt",
+"Ampere",
+"Ohm",
+"Coulomb"
+],
+"correctAnswer": 3,
+"marks": 4,
+"negativeMarks": 1,
+"solution": "Solution: The standard unit of electric charge in the International System of Units (SI) is the Coulomb (C).<br>Volt is the unit of electric potential.<br>Ampere is the unit of electric current.<br>Ohm is the unit of electrical resistance."
+},
+{
+"id": 5,
+"subject": "Physics",
+"topic": "Current Electricity",
+"questionText": "If two resistors of 6Ω and 4Ω are connected in series, what is their equivalent resistance?",
+"options": [
+"2.4Ω",
+"10Ω",
+"24Ω",
+"0.41Ω"
+],
+"correctAnswer": 1,
+"marks": 4,
+"negativeMarks": 1,
+"solution": "Solution: When resistors are connected in series, the equivalent resistance (Req) is the sum of the individual resistances.<br>Given: R1 = 6Ω, R2 = 4Ω.<br>Formula: Req = R1 + R2.<br>Substituting the values: Req = 6 + 4 = 10Ω.<br>The equivalent resistance is 10Ω."
+}
+]
+}
