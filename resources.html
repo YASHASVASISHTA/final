@@ -41,28 +41,10 @@
         .card { background-color: var(--card); border: 1px solid var(--border); border-radius: 0.75rem; padding: 2rem; text-align: center; display: flex; flex-direction: column; justify-content: space-between; }
         .card-title { font-size: 1.75rem; font-weight: 600; color: var(--primary); margin-bottom: 1rem; }
         .card-description { color: var(--muted-foreground); margin-bottom: 2rem; flex-grow: 1; }
+        .btn { padding: 0.75rem 1.5rem; border: none; border-radius: 0.375rem; font-weight: 600; cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; transition: all 0.2s; }
+        .btn-primary { background-color: var(--primary); color: var(--primary-foreground); }
+        .btn-primary:hover { background-color: #166534; transform: translateY(-2px); box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
         
-        .download-btn {
-            padding: 0.75rem 1.5rem;
-            border: none;
-            border-radius: 0.375rem;
-            font-weight: 600;
-            cursor: pointer;
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
-            transition: all 0.2s;
-            background-color: var(--primary);
-            color: var(--primary-foreground);
-        }
-        .download-btn:hover {
-            background-color: #166534;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-        }
-
         .download-list {
             list-style: none;
             text-align: left;
@@ -113,6 +95,7 @@
                 <li><a href="test-selection.html" class="nav-link">Mock Tests</a></li>
                 <li><a href="resources.html" class="nav-link active">Resources</a></li>
                 <li><a href="tips.html" class="nav-link">Tips & Revision</a></li>
+                     <li><a href="info.html" class="nav-link">Exam Info</a></li>
             </ul>
             <div class="nav-user">
                 <div class="user-avatar" id="user-avatar">U</div>
@@ -127,6 +110,7 @@
                 <li><a href="resources.html" class="nav-link active">Resources</a></li>
                 <li><a href="tips.html" class="nav-link">Tips & Revision</a></li>
                 <li><a href="#" id="mobile-logout-btn" class="nav-link">Logout</a></li>
+                     <li><a href="info.html" class="nav-link">Exam Info</a></li>
             </ul>
         </div>
     </nav>
@@ -139,10 +123,10 @@
         <section class="resources-grid">
             <div class="card">
                 <div>
-                    <h2 class="card-title">JEE Mains PYQs</h2>
-                    <p class="card-description">Get the last 5 years' question papers for JEE Mains.</p>
+                    <h2 class="card-title">JEE PYQs</h2>
+                    <p class="card-description">Get all previous year question papers for JEE Mains & Advanced.</p>
                 </div>
-                <button class="download-btn toggle-btn" data-exam="jee">
+                <button class="btn btn-primary toggle-btn" data-exam="jee">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/><path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/></svg>
                     <span>Show JEE Papers</span>
                 </button>
@@ -151,9 +135,9 @@
             <div class="card">
                 <div>
                     <h2 class="card-title">NEET PYQs</h2>
-                    <p class="card-description">Access the last 5 years' question papers for NEET.</p>
+                    <p class="card-description">Access a complete collection of NEET previous year question papers.</p>
                 </div>
-                <button class="download-btn toggle-btn" data-exam="neet">
+                <button class="btn btn-primary toggle-btn" data-exam="neet">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/><path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/></svg>
                     <span>Show NEET Papers</span>
                 </button>
@@ -162,9 +146,9 @@
             <div class="card">
                 <div>
                     <h2 class="card-title">KCET PYQs</h2>
-                    <p class="card-description">Download the last 6 years' question papers for KCET.</p>
+                    <p class="card-description">Download all Karnataka CET (KCET) previous year question papers.</p>
                 </div>
-                <button class="download-btn toggle-btn" data-exam="kcet">
+                <button class="btn btn-primary toggle-btn" data-exam="kcet">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/><path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/></svg>
                     <span>Show KCET Papers</span>
                 </button>
@@ -246,11 +230,14 @@
             // Clear existing list items
             listElement.innerHTML = '';
             
+            // NOTE: Replace this URL with the raw URL of your GitHub repository
+            const repoBaseUrl = 'https://github.com/YASHASHASISHTA/final/blob/main/';
+            
             const filePaths = files[examType];
             filePaths.forEach(fileName => {
                 const listItem = document.createElement('li');
                 const link = document.createElement('a');
-                link.href = `${fileName}`;
+                link.href = `${repoBaseUrl}${fileName}`;
                 link.textContent = fileName.replace('.pdf', '');
                 link.download = fileName; // 'download' attribute forces download
                 
