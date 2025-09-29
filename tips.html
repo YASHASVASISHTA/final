@@ -87,7 +87,9 @@
         }
 
         @media (max-width: 768px) {
+            /* Hide desktop navigation elements on small screens */
             .nav-links, .nav-user { display: none; }
+            /* Show the mobile menu button */
             .mobile-menu-btn { display: block; }
         }
     </style>
@@ -107,8 +109,11 @@
                 <div class="user-avatar" id="user-avatar">U</div>
                 <button class="logout-btn" id="logout-btn">Logout</button>
             </div>
+            <!-- Mobile Menu Button - Shown only on small screens -->
             <button class="mobile-menu-btn" id="mobile-menu-btn">&#9776;</button>
         </div>
+        
+        <!-- Mobile Menu Dropdown Content -->
         <div class="mobile-menu" id="mobile-menu">
             <ul class="mobile-nav-links">
                 <li><a href="dashboard.html" class="nav-link">Dashboard</a></li>
@@ -172,22 +177,30 @@
         
         <!-- Placeholder for future revision notes content -->
         <h2 style="font-size: 1.5rem; color: var(--foreground); margin-top: 3rem; margin-bottom: 1.5rem; text-align: center; border-bottom: 2px solid var(--border); padding-bottom: 10px;">Future Revision Content</h2>
-      
+        <div style="padding: 2rem; border: 1px dashed var(--border); border-radius: 0.5rem; text-align: center; color: var(--muted-foreground);">
+            <p>This space is ready for you to add detailed revision notes and study tips!</p>
+        </div>
     </main>
 
     <script>
-        // No more tab switching logic needed!
-        // Keeping only necessary event listeners for mobile menu and Firebase.
         document.addEventListener('DOMContentLoaded', () => {
-            document.getElementById('mobile-menu-btn').addEventListener('click', () => {
-                document.getElementById('mobile-menu').classList.toggle('active');
-            });
+            const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+            const mobileMenu = document.getElementById('mobile-menu');
+
+            // Toggle logic for the mobile menu button
+            if (mobileMenuBtn && mobileMenu) {
+                mobileMenuBtn.addEventListener('click', () => {
+                    mobileMenu.classList.toggle('active');
+                });
+            }
         });
     </script>
      <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
         import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
         
+        // This is a placeholder config based on your previous input. 
+        // In a real environment, these would be provided globally.
         const firebaseConfig = {
           apiKey: "AIzaSyCQ34ZAWWCMuaQ01fvX0sI-YdklK0mJ5aw",
           authDomain: "testseries-38752.firebaseapp.com",
@@ -205,7 +218,6 @@
                 const userName = user.displayName || user.email || 'User';
                 document.getElementById('user-avatar').textContent = userName.charAt(0).toUpperCase();
             } else {
-                // Assuming login.html exists based on the original template
                 window.location.href = 'login.html'; 
             }
         });
@@ -214,13 +226,7 @@
         document.getElementById('logout-btn').addEventListener('click', handleLogout);
         document.getElementById('mobile-logout-btn').addEventListener('click', handleLogout);
 
-        document.getElementById('mobile-menu-btn').addEventListener('click', () => {
-            document.getElementById('mobile-menu').classList.toggle('active');
-        });
+        // NOTE: The mobile menu toggle logic has been moved to the non-module script above for immediate DOM access.
     </script>
 </body>
 </html>
-
-
-
-
