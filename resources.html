@@ -6,44 +6,92 @@
     <title>Resources - ExamAce</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Segoe UI', sans-serif; line-height: 1.6; color: #374151; background-color: #f9fafb; min-height: 100vh; }
+        body { font-family: 'Inter', sans-serif; line-height: 1.6; color: #374151; background-color: #f9fafb; min-height: 100vh; }
         :root {
             --primary: #15803d; --primary-foreground: #ffffff; --secondary: #84cc16;
             --card: #ffffff; --muted: #f3f4f6; --muted-foreground: #6b7280;
             --border: #e5e7eb; --foreground: #374151;
         }
 
+        /* General styles */
+        .rounded-lg { border-radius: 0.75rem; }
+        .shadow-md { box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1); }
+
         /* Navigation styles */
-        .navbar { background-color: var(--card); border-bottom: 1px solid var(--border); padding: 0 1rem; position: sticky; top: 0; z-index: 100; }
+        .navbar { background-color: var(--card); border-bottom: 1px solid var(--border); padding: 0 1rem; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 4px rgba(0,0,0,0.04); }
         .nav-container { max-width: 1400px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; height: 4rem; }
         .nav-brand { font-size: 1.5rem; font-weight: 700; color: var(--primary); text-decoration: none; }
         .nav-links { display: flex; gap: 2rem; list-style: none; }
-        .nav-link { color: var(--foreground); text-decoration: none; font-weight: 500; transition: color 0.2s; }
-        .nav-link:hover, .nav-link.active { color: var(--primary); }
+        .nav-link { color: var(--foreground); text-decoration: none; font-weight: 500; padding: 0.5rem 0; transition: color 0.2s, border-bottom 0.2s; border-bottom: 2px solid transparent; }
+        .nav-link:hover { color: var(--primary); border-bottom-color: var(--primary); }
+        .nav-link.active { color: var(--primary); border-bottom-color: var(--primary); }
         .nav-user { display: flex; align-items: center; gap: 1rem; }
-        .user-avatar { width: 2rem; height: 2rem; background-color: var(--primary); color: var(--primary-foreground); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 600; }
-        .logout-btn { background: none; border: 1px solid var(--border); color: var(--foreground); padding: 0.5rem 1rem; border-radius: 0.375rem; cursor: pointer; transition: all 0.2s; }
-        .logout-btn:hover { background-color: var(--muted); }
+        .user-avatar { width: 2.5rem; height: 2.5rem; background-color: var(--primary); color: var(--primary-foreground); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 1.1rem; box-shadow: 0 2px 5px rgba(21, 128, 61, 0.3); }
+        .logout-btn { background: none; border: 1px solid var(--border); color: var(--foreground); padding: 0.5rem 1rem; border-radius: 0.375rem; cursor: pointer; transition: all 0.2s; font-weight: 500;}
+        .logout-btn:hover { background-color: var(--muted); border-color: var(--primary); }
 
         /* Mobile menu */
-        .mobile-menu-btn { display: none; background: none; border: none; font-size: 1.75rem; cursor: pointer; color: var(--foreground); }
+        .mobile-menu-btn { display: none; background: none; border: none; font-size: 1.75rem; cursor: pointer; color: var(--primary); }
         .mobile-menu { display: none; background-color: var(--card); border-top: 1px solid var(--border); padding: 1rem; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
         .mobile-menu.active { display: block; }
-        .mobile-nav-links { list-style: none; display: flex; flex-direction: column; gap: 1rem; }
-        .mobile-nav-links .nav-link { display: block; padding: 0.5rem 0; }
+        .mobile-nav-links { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; }
+        .mobile-nav-links .nav-link { display: block; padding: 0.75rem 0; font-weight: 500; border-bottom: 1px solid var(--border); }
+        .mobile-nav-links li:last-child .nav-link { border-bottom: none; }
 
         /* Main content */
         .main-container { max-width: 1200px; margin: 0 auto; padding: 2rem 1rem; }
-        .page-header { text-align: center; margin-bottom: 2.5rem; }
-        .page-title { font-size: 2.25rem; font-weight: 700; color: var(--primary); }
-        .page-subtitle { font-size: 1.1rem; color: var(--muted-foreground); margin-top: 0.5rem; }
-        .resources-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2rem; }
-        .card { background-color: var(--card); border: 1px solid var(--border); border-radius: 0.75rem; padding: 2rem; text-align: center; display: flex; flex-direction: column; justify-content: space-between; }
-        .card-title { font-size: 1.75rem; font-weight: 600; color: var(--primary); margin-bottom: 1rem; }
+        .page-header { text-align: center; margin-bottom: 3rem; }
+        .page-title { font-size: 2.5rem; font-weight: 800; color: var(--primary); }
+        .page-subtitle { font-size: 1.1rem; color: var(--muted-foreground); margin-top: 0.5rem; max-width: 600px; margin-left: auto; margin-right: auto; }
+        
+        .resources-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
+            gap: 2rem; 
+        }
+        
+        .card { 
+            background-color: var(--card); 
+            border: 1px solid var(--border); 
+            border-radius: 0.75rem; 
+            padding: 2rem; 
+            text-align: center; 
+            display: flex; 
+            flex-direction: column; 
+            justify-content: space-between; 
+            transition: transform 0.3s, box-shadow 0.3s;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
+        }
+        .card:hover {
+             transform: translateY(-5px);
+             box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .card-title { font-size: 2rem; font-weight: 700; color: var(--primary); margin-bottom: 0.5rem; }
         .card-description { color: var(--muted-foreground); margin-bottom: 2rem; flex-grow: 1; }
-        .btn { padding: 0.75rem 1.5rem; border: none; border-radius: 0.375rem; font-weight: 600; cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; transition: all 0.2s; }
-        .btn-primary { background-color: var(--primary); color: var(--primary-foreground); }
-        .btn-primary:hover { background-color: #166534; transform: translateY(-2px); box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        
+        .btn { 
+            padding: 0.85rem 1.5rem; 
+            border: none; 
+            border-radius: 0.5rem; 
+            font-weight: 600; 
+            cursor: pointer; 
+            text-decoration: none; 
+            display: inline-flex; 
+            align-items: center; 
+            justify-content: center; 
+            gap: 0.5rem; 
+            transition: all 0.3s ease; 
+            letter-spacing: 0.025em;
+        }
+        .btn-primary { 
+            background-color: var(--primary); 
+            color: var(--primary-foreground); 
+        }
+        .btn-primary:hover { 
+            background-color: #166534; 
+            box-shadow: 0 4px 10px rgba(21, 128, 61, 0.4); 
+        }
         
         .download-list {
             list-style: none;
@@ -51,7 +99,10 @@
             margin-top: 1.5rem;
             display: none; /* Initially hidden */
             flex-direction: column;
-            gap: 0.5rem;
+            gap: 0.75rem;
+            padding: 1rem;
+            background-color: var(--muted);
+            border-radius: 0.5rem;
         }
 
         .download-list.active {
@@ -61,11 +112,17 @@
         .download-list li a {
             color: var(--primary);
             text-decoration: none;
-            font-weight: 500;
+            font-weight: 600;
             transition: color 0.2s;
             display: flex;
             align-items: center;
-            gap: 0.5rem;
+            gap: 0.6rem;
+            padding: 0.5rem 0;
+            border-bottom: 1px dashed var(--border);
+        }
+
+        .download-list li:last-child a {
+            border-bottom: none;
         }
 
         .download-list li a:hover {
@@ -73,16 +130,20 @@
             text-decoration: underline;
         }
         
+        /* Toggle Button active state (Hide) */
         .toggle-btn.active {
-            background-color: #dc2626; /* A red color for "hide" state */
+            background-color: #dc2626; /* Red color for "Hide" state */
         }
         .toggle-btn.active:hover {
             background-color: #b91c1c;
+            box-shadow: 0 4px 10px rgba(220, 38, 38, 0.4); 
         }
 
         @media (max-width: 768px) {
             .nav-links, .nav-user { display: none; }
             .mobile-menu-btn { display: block; }
+            .page-title { font-size: 2rem; }
+            .resources-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -95,7 +156,7 @@
                 <li><a href="test-selection.html" class="nav-link">Mock Tests</a></li>
                 <li><a href="resources.html" class="nav-link active">Resources</a></li>
                 <li><a href="tips.html" class="nav-link">Tips & Revision</a></li>
-                     <li><a href="info.html" class="nav-link">Exam Info</a></li>
+                <li><a href="info.html" class="nav-link">Exam Info</a></li>
             </ul>
             <div class="nav-user">
                 <div class="user-avatar" id="user-avatar">U</div>
@@ -109,8 +170,8 @@
                 <li><a href="test-selection.html" class="nav-link">Mock Tests</a></li>
                 <li><a href="resources.html" class="nav-link active">Resources</a></li>
                 <li><a href="tips.html" class="nav-link">Tips & Revision</a></li>
+                <li><a href="info.html" class="nav-link">Exam Info</a></li>
                 <li><a href="#" id="mobile-logout-btn" class="nav-link">Logout</a></li>
-                     <li><a href="info.html" class="nav-link">Exam Info</a></li>
             </ul>
         </div>
     </nav>
@@ -118,7 +179,7 @@
     <main class="main-container">
         <header class="page-header">
             <h1 class="page-title">Download PYQs</h1>
-            <p class="page-subtitle">One-click downloads for all available Previous Year Question papers in PDF format.</p>
+            <p class="page-subtitle">One-click downloads for all available Previous Year Question papers in PDF format. Remember to ensure these files (e.g., JEE_21.pdf) are available in the same location as this page.</p>
         </header>
         <section class="resources-grid">
             <div class="card">
@@ -161,7 +222,7 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
         import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
         
-        // Firebase configuration
+        // Firebase configuration (using user's provided config)
         const firebaseConfig = {
           apiKey: "AIzaSyCQ34ZAWWCMuaQ01fvX0sI-YdklK0mJ5aw",
           authDomain: "testseries-38752.firebaseapp.com",
@@ -178,21 +239,26 @@
         onAuthStateChanged(auth, user => {
             if (user) {
                 const userName = user.displayName || user.email || 'User';
-                document.getElementById('user-avatar').textContent = userName.charAt(0).toUpperCase();
+                // Use a default letter if the name/email is not available or empty
+                const initial = userName.trim().length > 0 ? userName.charAt(0).toUpperCase() : 'U';
+                document.getElementById('user-avatar').textContent = initial;
             } else {
-                window.location.href = 'login.html';
+                // Redirect unauthenticated users to the login page
+                window.location.href = 'login.html'; 
             }
         });
         
-        const handleLogout = () => signOut(auth).catch(e => console.error(e));
+        // Logout functionality
+        const handleLogout = () => signOut(auth).catch(e => console.error("Logout error:", e));
         document.getElementById('logout-btn').addEventListener('click', handleLogout);
         document.getElementById('mobile-logout-btn').addEventListener('click', handleLogout);
 
+        // Mobile menu toggle
         document.getElementById('mobile-menu-btn').addEventListener('click', () => {
             document.getElementById('mobile-menu').classList.toggle('active');
         });
 
-        // Dynamic file lists and event listeners
+        // Dynamic file lists (as provided by the user)
         const files = {
             jee: ['JEE_21.pdf', 'JEE_22.pdf', 'JEE_23.pdf', 'JEE_24.pdf', 'JEE_25.pdf'],
             neet: ['NEET_21.pdf', 'NEET_22.pdf', 'NEET_23.pdf', 'NEET_24.pdf', 'NEET_25.pdf'],
@@ -200,6 +266,34 @@
         };
 
         const toggleButtons = document.querySelectorAll('.toggle-btn');
+        const downloadIcon = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/><path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/></svg>`;
+
+        /**
+         * Populates the download list for a given exam type.
+         * The links now point directly to the filename (relative path).
+         */
+        function populateList(examType, listElement) {
+            // Clear existing list items
+            listElement.innerHTML = '';
+            
+            const filePaths = files[examType];
+            filePaths.forEach(fileName => {
+                const listItem = document.createElement('li');
+                const link = document.createElement('a');
+                
+                // *** MODIFIED: Use only the fileName as the href (relative path) ***
+                link.href = fileName; 
+                link.download = fileName; // Forces the download dialogue
+                
+                const fileDisplayName = fileName.replace('.pdf', '');
+                // Insert the download icon and the file name
+                link.innerHTML = downloadIcon + fileDisplayName; 
+                
+                listItem.appendChild(link);
+                listElement.appendChild(listItem);
+            });
+        }
+        
         toggleButtons.forEach(button => {
             button.addEventListener('click', (event) => {
                 const examType = event.currentTarget.dataset.exam;
@@ -208,12 +302,16 @@
 
                 // Close all other lists and reset their buttons
                 document.querySelectorAll('.download-list').forEach(list => {
-                    list.classList.remove('active');
+                    if (list !== downloadList) {
+                        list.classList.remove('active');
+                    }
                 });
                 document.querySelectorAll('.toggle-btn').forEach(btn => {
-                    const btnExam = btn.dataset.exam;
-                    btn.querySelector('span').textContent = `Show ${btnExam.toUpperCase()} Papers`;
-                    btn.classList.remove('active');
+                    if (btn !== event.currentTarget) {
+                        const btnExam = btn.dataset.exam;
+                        btn.querySelector('span').textContent = `Show ${btnExam.toUpperCase()} Papers`;
+                        btn.classList.remove('active');
+                    }
                 });
 
                 // Toggle the clicked list
@@ -222,29 +320,13 @@
                     event.currentTarget.classList.add('active');
                     event.currentTarget.querySelector('span').textContent = `Hide ${examType.toUpperCase()} Papers`;
                     populateList(examType, downloadList);
+                } else {
+                    downloadList.classList.remove('active');
+                    event.currentTarget.classList.remove('active');
+                    event.currentTarget.querySelector('span').textContent = `Show ${examType.toUpperCase()} Papers`;
                 }
             });
         });
-
-        function populateList(examType, listElement) {
-            // Clear existing list items
-            listElement.innerHTML = '';
-            
-            // NOTE: Replace this URL with the raw URL of your GitHub repository
-            const repoBaseUrl = 'https://github.com/YASHASHASISHTA/final/blob/main/';
-            
-            const filePaths = files[examType];
-            filePaths.forEach(fileName => {
-                const listItem = document.createElement('li');
-                const link = document.createElement('a');
-                link.href = `${repoBaseUrl}${fileName}`;
-                link.textContent = fileName.replace('.pdf', '');
-                link.download = fileName; // 'download' attribute forces download
-                
-                listItem.appendChild(link);
-                listElement.appendChild(listItem);
-            });
-        }
     </script>
 </body>
 </html>
