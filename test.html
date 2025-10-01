@@ -62,6 +62,20 @@
         .option-label { background-color: var(--border); width: 2rem; height: 2rem; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 600; flex-shrink: 0; }
         .option.selected .option-label { background-color: var(--primary-foreground); color: var(--primary); }
         
+        /* New styling for fill-in-the-blanks input */
+        .fill-in-the-blanks-input {
+            padding: 0.75rem;
+            border: 1px solid var(--border);
+            border-radius: 0.375rem;
+            width: 200px;
+            font-size: 1.125rem;
+            transition: border-color 0.2s;
+        }
+        .fill-in-the-blanks-input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
         .question-controls { display: flex; justify-content: space-between; align-items: center; gap: 1rem; padding-top: 1.5rem; border-top: 1px solid var(--border); }
         .control-group { display: flex; gap: 0.75rem; }
         .btn { padding: 0.75rem 1.5rem; border: 1px solid var(--border); border-radius: 0.375rem; font-weight: 500; cursor: pointer; transition: all 0.2s; font-size: 0.875rem; display: inline-flex; align-items: center; gap: 0.5rem; }
@@ -266,15 +280,45 @@
                 document.getElementById('question-text').innerHTML = q.questionText;
 
                 const optionsContainer = document.getElementById('options-container');
-                optionsContainer.innerHTML = q.options.map((option, optIndex) => `
-                    <div class="option ${this.testSession.answers[index] === optIndex ? 'selected' : ''}" data-option="${optIndex}">
-                        <div class="option-label">${String.fromCharCode(65 + optIndex)}</div>
-                        <div class="option-text">${option}</div>
-                    </div>
-                `).join('');
-                optionsContainer.querySelectorAll('.option').forEach(option => {
-                    option.addEventListener('click', () => this.selectOption(parseInt(option.dataset.option)));
-                });
+                optionsContainer.innerHTML = ''; // Clear previous content
+
+                // Check for fill-in-the-blanks format
+                if (q.options.length === 1 && q.options[0] === 'nil') {
+                    // Render a numerical input field
+                    const input = document.createElement('input');
+                    input.type = 'number';
+                    input.className = 'fill-in-the-blanks-input';
+                    input.placeholder = 'Enter your answer...';
+                    
+                    // Pre-fill with a previously saved answer if it exists
+                    if (this.testSession.answers[index] !== undefined) {
+                        input.value = this.testSession.answers[index];
+                    }
+                    
+                    // Capture input and save the answer
+                    input.addEventListener('input', (e) => {
+                        this.testSession.answers[index] = e.target.value !== '' ? parseFloat(e.target.value) : undefined;
+                        this.updateQuestionNavigation();
+                        this.saveSession();
+                    });
+                    
+                    optionsContainer.appendChild(input);
+                    // FIXED: Do not disable Save & Next button for fill-in-the-blanks questions
+                    document.getElementById('save-next-btn').disabled = false;
+                } else {
+                    // Render regular multiple-choice options
+                    optionsContainer.innerHTML = q.options.map((option, optIndex) => `
+                        <div class="option ${this.testSession.answers[index] === optIndex ? 'selected' : ''}" data-option="${optIndex}">
+                            <div class="option-label">${String.fromCharCode(65 + optIndex)}</div>
+                            <div class="option-text">${option}</div>
+                        </div>
+                    `).join('');
+                    
+                    optionsContainer.querySelectorAll('.option').forEach(option => {
+                        option.addEventListener('click', () => this.selectOption(parseInt(option.dataset.option)));
+                    });
+                     document.getElementById('save-next-btn').disabled = false;
+                }
 
                 this.updateControls();
                 this.updateQuestionNavigation();
@@ -350,31 +394,53 @@
                 const { answers, testData } = this.testSession;
                 let correct = 0, incorrect = 0, unanswered = 0, finalScore = 0;
                 const subjectWise = {};
-                const incorrectTopics = []; // <-- MODIFIED: Array to store incorrect topics
+                const incorrectTopics = [];
                 
+                // Initialize subjectWise from the main test data
                 testData.subjects.forEach(sub => {
                     subjectWise[sub] = { correct: 0, incorrect: 0, unanswered: 0, total: 0 };
                 });
 
                 testData.questions_data.forEach((q, i) => {
-                    subjectWise[q.subject].total++;
-                    if (answers[i] !== undefined) {
-                        if (answers[i] === q.correctAnswer) {
+                    // Check if subject exists before accessing its properties
+                    if (subjectWise[q.subject]) {
+                        subjectWise[q.subject].total++;
+                    }
+
+                    const isFillInTheBlanks = q.options.length === 1 && q.options[0] === 'nil';
+                    const userAnswer = answers[i];
+                    
+                    if (userAnswer !== undefined && userAnswer !== null && userAnswer !== '') {
+                        let isCorrect = false;
+                        if (isFillInTheBlanks) {
+                            // Compare numerical values for fill-in-the-blanks
+                            isCorrect = parseFloat(userAnswer) === q.correctAnswer;
+                        } else {
+                            // Compare index for multiple-choice
+                            isCorrect = userAnswer === q.correctAnswer;
+                        }
+
+                        if (isCorrect) {
                             correct++;
                             finalScore += q.marks;
-                            subjectWise[q.subject].correct++;
+                            if (subjectWise[q.subject]) {
+                                subjectWise[q.subject].correct++;
+                            }
                         } else {
                             incorrect++;
                             finalScore -= q.negativeMarks;
-                            subjectWise[q.subject].incorrect++;
-                            // MODIFIED: If question is wrong, add its topic to the list
+                            if (subjectWise[q.subject]) {
+                                subjectWise[q.subject].incorrect++;
+                            }
                             if (q.topic) {
                                 incorrectTopics.push(q.topic);
                             }
                         }
                     } else {
                         unanswered++;
-                        subjectWise[q.subject].unanswered++;
+                        if (subjectWise[q.subject]) {
+                            subjectWise[q.subject].unanswered++;
+                        }
                     }
                 });
 
@@ -384,7 +450,7 @@
                     percentage: testData.marks > 0 ? Math.max(0, (finalScore / testData.marks) * 100) : 0,
                     completedAt: new Date().toISOString(),
                     timeTaken: (this.testSession.testData.duration * 60) - this.testSession.timeLeft,
-                    incorrectTopics: incorrectTopics // <-- MODIFIED: Include in the returned object
+                    incorrectTopics: incorrectTopics
                 };
             }
 
@@ -394,7 +460,11 @@
                 document.getElementById('confirm-submit').addEventListener('click', () => this.submitTest());
                 
                 document.getElementById('prev-btn').addEventListener('click', () => this.navigateToQuestion(this.currentQuestionIndex - 1));
-                document.getElementById('save-next-btn').addEventListener('click', () => this.navigateToQuestion(this.currentQuestionIndex + 1));
+                
+                // Simplified Save & Next button logic
+                document.getElementById('save-next-btn').addEventListener('click', () => {
+                    this.navigateToQuestion(this.currentQuestionIndex + 1);
+                });
                 
                 document.getElementById('clear-btn').addEventListener('click', () => {
                     delete this.testSession.answers[this.currentQuestionIndex];

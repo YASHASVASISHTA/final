@@ -66,7 +66,13 @@
         .review-options .option.correct-answer { background-color: #dcfce7; border-color: #4ade80; }
         .review-options .option.incorrect-choice { background-color: #fee2e2; border-color: #f87171; text-decoration: line-through; }
         .review-options .option-label { font-weight: 600; }
-        
+
+        /* New styles for fill-in-the-blanks review */
+        .review-blank-answer { display: flex; flex-direction: column; gap: 0.5rem; font-size: 1rem; }
+        .review-blank-answer span { font-weight: 500; }
+        .review-blank-answer .correct { color: #15803d; font-weight: 600; }
+        .review-blank-answer .incorrect { color: #b91c1c; font-weight: 600; }
+
         .solution { margin-top: 1rem; padding: 1rem; background-color: #e0f2fe; border-left: 4px solid #38bdf8; }
         .solution h4 { color: #0369a1; margin-bottom: 0.5rem; }
         .solution ol { padding-left: 1.25rem; }
@@ -111,7 +117,7 @@
            
                 <li><a href="resources.html" class="nav-link">Resources</a></li>
                 <li><a href="tips.html" class="nav-link">Tips & Revision</a></li>
-                 <li><a href="info.html" class="nav-link">Exam Info</a></li>
+              
             </ul>
             <div class="nav-user">
                 <div class="user-avatar" id="user-avatar">U</div>
@@ -126,7 +132,7 @@
            
                 <li><a href="resources.html" class="nav-link">Resources</a></li>
                 <li><a href="tips.html" class="nav-link">Tips & Revision</a></li>
-                 <li><a href="info.html" class="nav-link">Exam Info</a></li>
+              
                 <li><a href="#" id="mobile-logout-btn" class="nav-link">Logout</a></li>
             </ul>
         </div>
@@ -271,12 +277,19 @@
 
                 this.results.testData.questions_data.forEach((q, index) => {
                     solutionText += `Q${index + 1}: ${q.questionText}\n`;
-                    q.options.forEach((option, optIndex) => {
-                        solutionText += `  ${String.fromCharCode(65 + optIndex)}. ${option}\n`;
-                    });
-                    const correctOptionLetter = String.fromCharCode(65 + q.correctAnswer);
-                    const correctOptionText = q.options[q.correctAnswer];
-                    solutionText += `\nCorrect Answer: ${correctOptionLetter}. ${correctOptionText}\n`;
+                    
+                    const isFillInTheBlanks = q.options.length === 1 && q.options[0] === 'nil';
+                    
+                    if (isFillInTheBlanks) {
+                        solutionText += `\nCorrect Answer: ${q.correctAnswer}\n`;
+                    } else {
+                        q.options.forEach((option, optIndex) => {
+                            solutionText += `  ${String.fromCharCode(65 + optIndex)}. ${option}\n`;
+                        });
+                        const correctOptionLetter = String.fromCharCode(65 + q.correctAnswer);
+                        const correctOptionText = q.options[q.correctAnswer];
+                        solutionText += `\nCorrect Answer: ${correctOptionLetter}. ${correctOptionText}\n`;
+                    }
                     
                     let formattedSolution = q.solution || 'No detailed solution available.';
                     formattedSolution = formattedSolution.replace(/<br>/g, '\n').replace(/Solution: /g, '');
@@ -387,6 +400,27 @@
                     
                     if (filter !== 'all' && filter !== status) return;
                     
+                    let optionsHtml = '';
+                    // Check if it's a fill-in-the-blanks question
+                    if (q.options.length === 1 && q.options[0] === 'nil') {
+                        optionsHtml = `
+                            <div class="review-blank-answer">
+                                <p>Your Answer: <span class="${status}">${userAnswer !== undefined ? userAnswer : 'N/A'}</span></p>
+                                <p>Correct Answer: <span class="correct">${q.correctAnswer}</span></p>
+                            </div>
+                        `;
+                    } else {
+                        optionsHtml = q.options.map((option, optIndex) => `
+                            <div class="option 
+                                ${optIndex === q.correctAnswer ? 'correct-answer' : ''}
+                                ${optIndex === userAnswer && !isCorrect ? 'incorrect-choice' : ''}
+                            ">
+                                <span class="option-label">${String.fromCharCode(65 + optIndex)}.</span>
+                                <span>${option}</span>
+                            </div>
+                        `).join('');
+                    }
+
                     let formattedSolution = q.solution || 'No detailed solution available.';
                     const steps = formattedSolution.replace(/Solution: /g, '').split(/<br\s*\/?>/i);
                     let solutionHtml = '';
@@ -408,15 +442,7 @@
                             </div>
                             <p>${q.questionText}</p>
                             <div class="review-options">
-                                ${q.options.map((option, optIndex) => `
-                                    <div class="option 
-                                        ${optIndex === q.correctAnswer ? 'correct-answer' : ''}
-                                        ${optIndex === userAnswer && !isCorrect ? 'incorrect-choice' : ''}
-                                    ">
-                                        <span class="option-label">${String.fromCharCode(65 + optIndex)}.</span>
-                                        <span>${option}</span>
-                                    </div>
-                                `).join('')}
+                                ${optionsHtml}
                             </div>
                             <div class="solution">
                                 <h4>Solution:</h4>
