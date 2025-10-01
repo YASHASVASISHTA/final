@@ -13,43 +13,35 @@
             --border: #e5e7eb; --foreground: #374151;
         }
 
-        /* General styles */
-        .rounded-lg { border-radius: 0.75rem; }
-        .shadow-md { box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1); }
-
         /* Navigation styles */
-        .navbar { background-color: var(--card); border-bottom: 1px solid var(--border); padding: 0 1rem; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 4px rgba(0,0,0,0.04); }
+        .navbar { background-color: var(--card); border-bottom: 1px solid var(--border); padding: 0 1rem; position: sticky; top: 0; z-index: 100; }
         .nav-container { max-width: 1400px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; height: 4rem; }
         .nav-brand { font-size: 1.5rem; font-weight: 700; color: var(--primary); text-decoration: none; }
         .nav-links { display: flex; gap: 2rem; list-style: none; }
-        .nav-link { color: var(--foreground); text-decoration: none; font-weight: 500; padding: 0.5rem 0; transition: color 0.2s, border-bottom 0.2s; border-bottom: 2px solid transparent; }
-        .nav-link:hover { color: var(--primary); border-bottom-color: var(--primary); }
-        .nav-link.active { color: var(--primary); border-bottom-color: var(--primary); }
+        .nav-link { color: var(--foreground); text-decoration: none; font-weight: 500; transition: color 0.2s; }
+        .nav-link:hover, .nav-link.active { color: var(--primary); }
         .nav-user { display: flex; align-items: center; gap: 1rem; }
-        .user-avatar { width: 2.5rem; height: 2.5rem; background-color: var(--primary); color: var(--primary-foreground); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 1.1rem; box-shadow: 0 2px 5px rgba(21, 128, 61, 0.3); }
-        .logout-btn { background: none; border: 1px solid var(--border); color: var(--foreground); padding: 0.5rem 1rem; border-radius: 0.375rem; cursor: pointer; transition: all 0.2s; font-weight: 500;}
-        .logout-btn:hover { background-color: var(--muted); border-color: var(--primary); }
+        .user-avatar { width: 2rem; height: 2rem; background-color: var(--primary); color: var(--primary-foreground); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 600; }
+        .logout-btn { background: none; border: 1px solid var(--border); color: var(--foreground); padding: 0.5rem 1rem; border-radius: 0.375rem; cursor: pointer; transition: all 0.2s; }
+        .logout-btn:hover { background-color: var(--muted); }
 
         /* Mobile menu */
-        .mobile-menu-btn { display: none; background: none; border: none; font-size: 1.75rem; cursor: pointer; color: var(--primary); }
+        .mobile-menu-btn { display: none; background: none; border: none; font-size: 1.75rem; cursor: pointer; color: var(--foreground); }
         .mobile-menu { display: none; background-color: var(--card); border-top: 1px solid var(--border); padding: 1rem; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
         .mobile-menu.active { display: block; }
-        .mobile-nav-links { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; }
-        .mobile-nav-links .nav-link { display: block; padding: 0.75rem 0; font-weight: 500; border-bottom: 1px solid var(--border); }
-        .mobile-nav-links li:last-child .nav-link { border-bottom: none; }
+        .mobile-nav-links { list-style: none; display: flex; flex-direction: column; gap: 1rem; }
+        .mobile-nav-links .nav-link { display: block; padding: 0.5rem 0; }
 
         /* Main content */
         .main-container { max-width: 1200px; margin: 0 auto; padding: 2rem 1rem; }
-        .page-header { text-align: center; margin-bottom: 3rem; }
-        .page-title { font-size: 2.5rem; font-weight: 800; color: var(--primary); }
-        .page-subtitle { font-size: 1.1rem; color: var(--muted-foreground); margin-top: 0.5rem; max-width: 600px; margin-left: auto; margin-right: auto; }
-        
+        .page-header { text-align: center; margin-bottom: 2.5rem; }
+        .page-title { font-size: 2.25rem; font-weight: 700; color: var(--primary); }
+        .page-subtitle { font-size: 1.1rem; color: var(--muted-foreground); margin-top: 0.5rem; }
         .resources-grid { 
             display: grid; 
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
             gap: 2rem; 
         }
-        
         .card { 
             background-color: var(--card); 
             border: 1px solid var(--border); 
@@ -58,20 +50,14 @@
             text-align: center; 
             display: flex; 
             flex-direction: column; 
-            justify-content: space-between; 
-            transition: transform 0.3s, box-shadow 0.3s;
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
+            justify-content: space-between;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.06);
         }
-        .card:hover {
-             transform: translateY(-5px);
-             box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
-        }
-        
-        .card-title { font-size: 2rem; font-weight: 700; color: var(--primary); margin-bottom: 0.5rem; }
+        .card-title { font-size: 1.75rem; font-weight: 600; color: var(--primary); margin-bottom: 1rem; }
         .card-description { color: var(--muted-foreground); margin-bottom: 2rem; flex-grow: 1; }
         
         .btn { 
-            padding: 0.85rem 1.5rem; 
+            padding: 0.75rem 1.5rem; 
             border: none; 
             border-radius: 0.5rem; 
             font-weight: 600; 
@@ -81,8 +67,8 @@
             align-items: center; 
             justify-content: center; 
             gap: 0.5rem; 
-            transition: all 0.3s ease; 
-            letter-spacing: 0.025em;
+            transition: all 0.2s; 
+            width: 100%;
         }
         .btn-primary { 
             background-color: var(--primary); 
@@ -90,7 +76,8 @@
         }
         .btn-primary:hover { 
             background-color: #166534; 
-            box-shadow: 0 4px 10px rgba(21, 128, 61, 0.4); 
+            transform: translateY(-2px); 
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1); 
         }
         
         .download-list {
@@ -100,9 +87,8 @@
             display: none; /* Initially hidden */
             flex-direction: column;
             gap: 0.75rem;
-            padding: 1rem;
-            background-color: var(--muted);
-            border-radius: 0.5rem;
+            padding-top: 0.75rem;
+            border-top: 1px dashed var(--border);
         }
 
         .download-list.active {
@@ -110,44 +96,47 @@
         }
 
         .download-list li a {
-            color: var(--primary);
+            color: var(--foreground);
             text-decoration: none;
-            font-weight: 600;
-            transition: color 0.2s;
+            font-weight: 500;
+            transition: all 0.2s;
             display: flex;
             align-items: center;
-            gap: 0.6rem;
-            padding: 0.5rem 0;
-            border-bottom: 1px dashed var(--border);
-        }
-
-        .download-list li:last-child a {
-            border-bottom: none;
+            gap: 0.75rem;
+            padding: 0.5rem;
+            border-radius: 0.375rem;
+            background-color: var(--muted);
         }
 
         .download-list li a:hover {
-            color: #166534;
-            text-decoration: underline;
+            color: var(--primary);
+            background-color: #e5e7eb;
         }
         
-        /* Toggle Button active state (Hide) */
+        .download-list li a svg {
+            color: var(--primary);
+            min-width: 16px;
+        }
+        
         .toggle-btn.active {
-            background-color: #dc2626; /* Red color for "Hide" state */
+            background-color: #ef4444; /* Red color for "hide" state */
         }
         .toggle-btn.active:hover {
-            background-color: #b91c1c;
-            box-shadow: 0 4px 10px rgba(220, 38, 38, 0.4); 
+            background-color: #dc2626;
         }
 
+        /* Responsive adjustments */
         @media (max-width: 768px) {
             .nav-links, .nav-user { display: none; }
             .mobile-menu-btn { display: block; }
-            .page-title { font-size: 2rem; }
-            .resources-grid { grid-template-columns: 1fr; }
+            .resources-grid {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
 <body>
+    <!-- Navigation Bar -->
     <nav class="navbar">
         <div class="nav-container">
             <a href="dashboard.html" class="nav-brand">ExamAce</a>
@@ -176,16 +165,18 @@
         </div>
     </nav>
 
+    <!-- Main Content -->
     <main class="main-container">
         <header class="page-header">
-            <h1 class="page-title">Download PYQs</h1>
-            <p class="page-subtitle">One-click downloads for all available Previous Year Question papers in PDF format</p>
+            <h1 class="page-title">Download Previous Year Question Papers (PYQs)</h1>
+            <p class="page-subtitle">Instantly download PDF files for major entrance exams. No sign-up required!</p>
         </header>
         <section class="resources-grid">
+            <!-- JEE Card -->
             <div class="card">
                 <div>
                     <h2 class="card-title">JEE PYQs</h2>
-                    <p class="card-description">Get all previous year question papers for JEE Mains & Advanced.</p>
+                    <p class="card-description">Get all available previous year question papers for JEE Mains & Advanced to enhance your practice.</p>
                 </div>
                 <button class="btn btn-primary toggle-btn" data-exam="jee">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/><path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/></svg>
@@ -193,10 +184,12 @@
                 </button>
                 <ul class="download-list" id="jee-list"></ul>
             </div>
+            
+            <!-- NEET Card -->
             <div class="card">
                 <div>
                     <h2 class="card-title">NEET PYQs</h2>
-                    <p class="card-description">Access a complete collection of NEET previous year question papers.</p>
+                    <p class="card-description">Access a complete collection of NEET previous year question papers crucial for medical entrance preparation.</p>
                 </div>
                 <button class="btn btn-primary toggle-btn" data-exam="neet">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/><path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/></svg>
@@ -204,10 +197,12 @@
                 </button>
                 <ul class="download-list" id="neet-list"></ul>
             </div>
+
+            <!-- KCET Card -->
             <div class="card">
                 <div>
                     <h2 class="card-title">KCET PYQs</h2>
-                    <p class="card-description">Download all Karnataka CET (KCET) previous year question papers.</p>
+                    <p class="card-description">Download all Karnataka CET (KCET) previous year papers for state-level exam practice.</p>
                 </div>
                 <button class="btn btn-primary toggle-btn" data-exam="kcet">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/><path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/></svg>
@@ -219,10 +214,12 @@
     </main>
 
     <script type="module">
+        // Import Firebase modules for authentication handling
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
         import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
         
-        // Firebase configuration (using user's provided config)
+        // --- START OF CONFIGURATION ---
+        // Placeholder Firebase Configuration (Please replace with your actual configuration if deploying)
         const firebaseConfig = {
           apiKey: "AIzaSyCQ34ZAWWCMuaQ01fvX0sI-YdklK0mJ5aw",
           authDomain: "testseries-38752.firebaseapp.com",
@@ -232,68 +229,97 @@
           appId: "1:519384534407:web:201265a9d703708334d722"
         };
       
+        // Data structure containing the actual, working Google Drive URLs and filenames
+        const files = {
+            jee: [
+                { name: 'JEE 2021', url: 'https://drive.google.com/uc?export=download&id=1sORTAB2GPG7Bg05jRJTFv3fpmGhyM5-a', filename: 'JEE_21.pdf' },
+                { name: 'JEE 2022', url: 'https://drive.google.com/uc?export=download&id=1nghtYMVB-zpFEJR1uXz43srZMavTO0IF', filename: 'JEE_22.pdf' },
+                { name: 'JEE 2023', url: 'https://drive.google.com/uc?export=download&id=1KGAbYnwERKpxTGCL2cDXpCiIbw34p22P', filename: 'JEE_23.pdf' },
+                { name: 'JEE 2024', url: 'https://drive.google.com/uc?export=download&id=1AQ5VutPbebW4niu9bIF8SJ4jadxfPoZs', filename: 'JEE_24.pdf' },
+                { name: 'JEE 2025', url: 'https://drive.google.com/uc?export=download&id=19dsTM1Q5oE3OnDqkdEHVcui3mBDIUp5U', filename: 'JEE_25.pdf' },
+            ],
+            neet: [
+                { name: 'NEET 2021', url: 'https://drive.google.com/uc?export=download&id=1yfNoNXKkagsUfmI3K4xpsRR_EmHfpy9X', filename: 'NEET_2021.pdf' },
+                { name: 'NEET 2022', url: 'https://drive.google.com/uc?export=download&id=1-fsauQHRVNAJEMmf-EDrlcsRtBD96ykV', filename: 'NEET_2022.pdf' },
+                { name: 'NEET 2023', url: 'https://drive.google.com/uc?export=download&id=1Fml64e8bYQeROzG5FgXjAcXwor9XIWFd', filename: 'NEET_2023.pdf' },
+                { name: 'NEET 2024', url: 'https://drive.google.com/uc?export=download&id=1MyOpRmmTaGEfg9ca_l-zrP_Z3Au6skaC', filename: 'NEET_2024.pdf' },
+                { name: 'NEET 2025', url: 'https://drive.google.com/uc?export=download&id=1U0Rf7fgAu3viGhiJZydYR8muQUsLaBDJ', filename: 'NEET_2025.pdf' },
+            ],
+            kcet: [
+                { name: 'KCET 2020', url: 'https://drive.google.com/uc?export=download&id=1pJDyVj_S0_wg5nt0Cb277eZcS5rQNDSg', filename: 'KCET_2020.pdf' },
+                { name: 'KCET 2021', url: 'https://drive.google.com/uc?export=download&id=1SjufYpdsKBvpKJZwAZTXgRnkt4L4kY2M', filename: 'KCET_2021.pdf' },
+                { name: 'KCET 2022', url: 'https://drive.google.com/uc?export=download&id=1JSKKcpoH5x9hRo6gmmragzDbSDe7mkK6', filename: 'KCET_2022.pdf' },
+                { name: 'KCET 2023', url: 'https://drive.google.com/uc?export=download&id=1dCwYYzQdDVkJvnZMvQe93DwfJ7geZnkE', filename: 'KCET_2023.pdf' },
+                { name: 'KCET 2024', url: 'https://drive.google.com/uc?export=download&id=19ublZdui6e3RRG70UEWyPZUApdY2RhhJ', filename: 'KCET_2024.pdf' },
+                { name: 'KCET 2025', url: 'https://drive.google.com/uc?export=download&id=1XI_l-cEfUv-diDPZuVeyZKctFquaUBKH', filename: 'KCET_2025.pdf' }
+            ]
+        };
+        // --- END OF CONFIGURATION ---
+
         // Initialize Firebase
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
 
+        // --- Authentication Logic ---
         onAuthStateChanged(auth, user => {
             if (user) {
                 const userName = user.displayName || user.email || 'User';
-                // Use a default letter if the name/email is not available or empty
-                const initial = userName.trim().length > 0 ? userName.charAt(0).toUpperCase() : 'U';
-                document.getElementById('user-avatar').textContent = initial;
+                document.getElementById('user-avatar').textContent = userName.charAt(0).toUpperCase();
             } else {
-                // Redirect unauthenticated users to the login page
-                window.location.href = 'login.html'; 
+                // Redirect user to login page if not authenticated
+                // window.location.href = 'login.html';
+                console.log("User not authenticated. Assuming public access for resource page demo.");
             }
         });
         
-        // Logout functionality
-        const handleLogout = () => signOut(auth).catch(e => console.error("Logout error:", e));
+        const handleLogout = () => signOut(auth).catch(e => console.error("Logout Error:", e));
         document.getElementById('logout-btn').addEventListener('click', handleLogout);
         document.getElementById('mobile-logout-btn').addEventListener('click', handleLogout);
 
-        // Mobile menu toggle
         document.getElementById('mobile-menu-btn').addEventListener('click', () => {
             document.getElementById('mobile-menu').classList.toggle('active');
         });
 
-        // Dynamic file lists (as provided by the user)
-        const files = {
-            jee: ['JEE_21.pdf', 'JEE_22.pdf', 'JEE_23.pdf', 'JEE_24.pdf', 'JEE_25.pdf'],
-            neet: ['NEET_21.pdf', 'NEET_22.pdf', 'NEET_23.pdf', 'NEET_24.pdf', 'NEET_25.pdf'],
-            kcet: ['KCET_2020.pdf', 'KCET_2021.pdf', 'KCET_2022.pdf', 'KCET_2023.pdf', 'KCET_2024.pdf', 'KCET_2025.pdf']
-        };
-
-        const toggleButtons = document.querySelectorAll('.toggle-btn');
-        const downloadIcon = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/><path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/></svg>`;
+        // --- Resource List Logic ---
 
         /**
-         * Populates the download list for a given exam type.
-         * The links now point directly to the filename (relative path).
+         * Populates the download list with links using the provided file objects.
+         * @param {string} examType - 'jee', 'neet', or 'kcet'.
+         * @param {HTMLElement} listElement - The <ul> element to populate.
          */
         function populateList(examType, listElement) {
-            // Clear existing list items
             listElement.innerHTML = '';
             
-            const filePaths = files[examType];
-            filePaths.forEach(fileName => {
+            const fileObjects = files[examType];
+            
+            fileObjects.forEach(file => {
                 const listItem = document.createElement('li');
                 const link = document.createElement('a');
                 
-                // *** MODIFIED: Use only the fileName as the href (relative path) ***
-                link.href = fileName; 
-                link.download = fileName; // Forces the download dialogue
+                // Set the direct download URL (Google Drive 'uc?export=download')
+                link.href = file.url;
+                // Set the text displayed to the user
+                link.textContent = file.name; 
+                // Set the desired filename for the downloaded file
+                link.download = file.filename;
+                // Important: Use target="_blank" to ensure the download starts reliably
+                link.target = "_blank"; 
                 
-                const fileDisplayName = fileName.replace('.pdf', '');
-                // Insert the download icon and the file name
-                link.innerHTML = downloadIcon + fileDisplayName; 
+                // Download icon SVG for visual clarity
+                const downloadIcon = `
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                        <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/>
+                        <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/>
+                    </svg>
+                `;
+                link.innerHTML = downloadIcon + `<span>${file.name} (${file.filename})</span>`;
                 
                 listItem.appendChild(link);
                 listElement.appendChild(listItem);
             });
         }
-        
+
+        const toggleButtons = document.querySelectorAll('.toggle-btn');
         toggleButtons.forEach(button => {
             button.addEventListener('click', (event) => {
                 const examType = event.currentTarget.dataset.exam;
@@ -302,7 +328,7 @@
 
                 // Close all other lists and reset their buttons
                 document.querySelectorAll('.download-list').forEach(list => {
-                    if (list !== downloadList) {
+                    if (list.id !== `${examType}-list`) {
                         list.classList.remove('active');
                     }
                 });
@@ -330,4 +356,3 @@
     </script>
 </body>
 </html>
-
