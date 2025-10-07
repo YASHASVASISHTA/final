@@ -78,6 +78,16 @@
         .solution ol { padding-left: 1.25rem; }
         .solution li { margin-bottom: 0.5rem; }
         .solution .conclusion { margin-top: 1rem; font-weight: 600; }
+        
+        /* Style for the question image displayed in the review */
+        .review-image {
+            max-width: 100%;
+            height: auto;
+            margin-top: 1rem;
+            margin-bottom: 1rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
 
         .sidebar-card { position: sticky; top: 5rem; }
         .subject-breakdown .subject-item { margin-bottom: 1rem; }
@@ -114,10 +124,10 @@
             <ul class="nav-links">
                 <li><a href="dashboard.html" class="nav-link">Dashboard</a></li>
                 <li><a href="test-selection.html" class="nav-link">Mock Tests</a></li>
-           
+            
                 <li><a href="resources.html" class="nav-link">Resources</a></li>
                 <li><a href="tips.html" class="nav-link">Tips & Revision</a></li>
-              
+            
             </ul>
             <div class="nav-user">
                 <div class="user-avatar" id="user-avatar">U</div>
@@ -129,10 +139,10 @@
             <ul class="mobile-nav-links">
                 <li><a href="dashboard.html" class="nav-link">Dashboard</a></li>
                 <li><a href="test-selection.html" class="nav-link">Mock Tests</a></li>
-           
+            
                 <li><a href="resources.html" class="nav-link">Resources</a></li>
                 <li><a href="tips.html" class="nav-link">Tips & Revision</a></li>
-              
+            
                 <li><a href="#" id="mobile-logout-btn" class="nav-link">Logout</a></li>
             </ul>
         </div>
@@ -176,11 +186,11 @@
                             <div id="subject-container"></div>
                         </div>
                         <div class="time-analysis" style="margin-top: 2rem;">
-                             <h2 class="card-title">Time Analysis</h2>
-                             <div id="time-container"></div>
+                            <h2 class="card-title">Time Analysis</h2>
+                            <div id="time-container"></div>
                         </div>
-                         <div class="action-buttons">
-                         
+                        <div class="action-buttons">
+                        
                             <a href="test-selection.html" class="btn btn-outline">Take Another Test</a>
                         </div>
                     </div>
@@ -198,7 +208,6 @@
         
         let app, auth, db;
 
-        // Use the firebaseConfig provided by the user
         const firebaseConfig = {
             apiKey: "AIzaSyCQ34ZAWWCMuaQ01fvX0sI-YdklK0mJ5aw",
             authDomain: "testseries-38752.firebaseapp.com",
@@ -228,7 +237,7 @@
             constructor() {
                 this.results = null;
                 this.user = null;
-                this.solutionsDownloaded = false; // Flag to prevent double download
+                this.solutionsDownloaded = false;
                 
                 if (auth) {
                     onAuthStateChanged(auth, user => {
@@ -268,9 +277,10 @@
                 });
             }
 
+            // --- Reverted to plain text download (.txt) without image inclusion ---
             downloadSolutions() {
-                if (!this.results || this.solutionsDownloaded) return; // Check flag here
-                this.solutionsDownloaded = true; // Set flag to true
+                if (!this.results || this.solutionsDownloaded) return;
+                this.solutionsDownloaded = true;
 
                 let solutionText = `Solutions for: ${this.results.testData.title}\n`;
                 solutionText += "========================================\n\n";
@@ -280,11 +290,13 @@
                     
                     const isFillInTheBlanks = q.options.length === 1 && q.options[0] === 'nil';
                     
+                    // Note: No image URL is included in the .txt download as requested.
+                    
                     if (isFillInTheBlanks) {
                         solutionText += `\nCorrect Answer: ${q.correctAnswer}\n`;
                     } else {
                         q.options.forEach((option, optIndex) => {
-                            solutionText += `  ${String.fromCharCode(65 + optIndex)}. ${option}\n`;
+                            solutionText += `   ${String.fromCharCode(65 + optIndex)}. ${option}\n`;
                         });
                         const correctOptionLetter = String.fromCharCode(65 + q.correctAnswer);
                         const correctOptionText = q.options[q.correctAnswer];
@@ -323,7 +335,8 @@
                 }
                 try {
                     this.results = JSON.parse(resultsStr);
-                 
+                    // Image injection removed.
+                    
                     this.renderPage();
                     this.downloadSolutions(); 
                 } catch (error) {
@@ -331,7 +344,6 @@
                     document.getElementById('loading-state').innerHTML = '<h1>Error loading results data.</h1>';
                 }
             }
-            
             
             renderPage() {
                 this.renderSummary();
@@ -401,7 +413,6 @@
                     if (filter !== 'all' && filter !== status) return;
                     
                     let optionsHtml = '';
-                    // Check if it's a fill-in-the-blanks question
                     if (q.options.length === 1 && q.options[0] === 'nil') {
                         optionsHtml = `
                             <div class="review-blank-answer">
@@ -421,15 +432,21 @@
                         `).join('');
                     }
 
+                    let solutionHtml = '';
                     let formattedSolution = q.solution || 'No detailed solution available.';
                     const steps = formattedSolution.replace(/Solution: /g, '').split(/<br\s*\/?>/i);
-                    let solutionHtml = '';
+                    
                     if (steps.length > 1) {
                         const conclusion = steps.pop();
                         solutionHtml = `<ol>${steps.map(step => `<li>${step.trim()}</li>`).join('')}</ol><p class="conclusion">${conclusion.trim()}</p>`;
                     } else {
                         solutionHtml = `<p>${formattedSolution}</p>`;
                     }
+                    
+                    // --- Added image tag to display the question's image if URL is present ---
+                    let questionImageHtml = q.questionImageUrl 
+                        ? `<img src="${q.questionImageUrl}" alt="Question Image" class="review-image" onerror="this.style.display='none'">` 
+                        : '';
 
                     container.innerHTML += `
                         <div class="review-question" data-status="${status}">
@@ -441,6 +458,7 @@
                                 </div>
                             </div>
                             <p>${q.questionText}</p>
+                            ${questionImageHtml}
                             <div class="review-options">
                                 ${optionsHtml}
                             </div>
@@ -459,7 +477,7 @@
                     if (e.target.tagName === 'BUTTON') {
                         filterContainer.querySelector('.active').classList.remove('active');
                         e.target.classList.add('active');
-                        this.renderAnswerReview(e.target.dataset.filter);
+                           this.renderAnswerReview(e.target.dataset.filter);
                     }
                 });
             }

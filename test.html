@@ -55,7 +55,25 @@
         .question-number { background-color: var(--primary); color: var(--primary-foreground); padding: 0.5rem 1rem; border-radius: 0.375rem; font-weight: 600; }
         .question-subject { background-color: var(--muted); padding: 0.25rem 0.75rem; border-radius: 1rem; font-size: 0.875rem; font-weight: 500; }
         .question-timer { font-family: 'Courier New', monospace; font-weight: 600; }
-        .question-text { font-size: 1.125rem; margin-bottom: 2rem; }
+        
+        .question-text { font-size: 1.125rem; margin-bottom: 1rem; }
+        
+        /* New Image Styling */
+        .question-image {
+            max-width: 100%;
+            height: auto;
+            max-height: 40vh; /* Limit size in question area */
+            border: 1px solid var(--border);
+            border-radius: 0.5rem;
+            margin-bottom: 2rem;
+            cursor: zoom-in;
+            display: block;
+            transition: transform 0.2s;
+        }
+        .question-image:hover {
+             box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
         .option { display: flex; gap: 1rem; padding: 1rem; margin-bottom: 0.75rem; border: 1px solid var(--border); border-radius: 0.5rem; cursor: pointer; transition: all 0.2s; background-color: var(--card); }
         .option:hover { border-color: var(--primary); background-color: #f0fdf4; }
         .option.selected { border-color: var(--primary); background-color: var(--primary); color: var(--primary-foreground); }
@@ -84,13 +102,54 @@
         .btn-warning { background-color: var(--warning); color: var(--warning-foreground); border-color: var(--warning); }
         .btn-secondary { background-color: #16a34a; color: white; border-color: #16a34a; }
 
-        /* Modal */
+        /* General Modal */
         .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(0, 0, 0, 0.5); display: flex; align-items: center; justify-content: center; z-index: 1000; }
         .modal { background-color: var(--background); border-radius: 0.5rem; padding: 2rem; max-width: 400px; width: 90%; text-align: center; }
         .modal h3 { font-size: 1.25rem; margin-bottom: 1rem; }
         .modal p { color: var(--muted-foreground); margin-bottom: 1.5rem; }
         .modal-actions { display: flex; gap: 1rem; justify-content: center; }
         .hidden { display: none !important; }
+        
+        /* Image Zoom Modal */
+        #image-modal-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-color: rgba(0, 0, 0, 0.9);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+        }
+        #image-modal-content {
+            position: relative;
+            max-width: 95%;
+            max-height: 95%;
+        }
+        #zoomed-image {
+            max-width: 100%;
+            max-height: 100vh;
+            display: block;
+            object-fit: contain;
+        }
+        #close-image-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 2px solid white;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            line-height: 36px;
+            text-align: center;
+            transition: background 0.2s;
+        }
+        #close-image-btn:hover {
+            background: rgba(255, 255, 255, 0.4);
+        }
 
         /* Responsive */
         @media (max-width: 768px) {
@@ -144,7 +203,12 @@
                     </div>
                      <div class="question-timer" id="question-timer">00:00</div>
                 </div>
-                <div class="question-text" id="question-text">Loading question...</div>
+                <!-- Question Text and Image Container -->
+                <div id="question-body">
+                    <div class="question-text" id="question-text">Loading question...</div>
+                    <div id="image-container"></div>
+                </div>
+                
                 <div class="options-container" id="options-container"></div>
                 <div class="question-controls">
                     <div class="control-group">
@@ -161,6 +225,7 @@
         </main>
     </div>
 
+    <!-- Confirmation Modal -->
     <div class="modal-overlay hidden" id="submit-modal">
         <div class="modal">
             <h3>Submit Test?</h3>
@@ -171,6 +236,15 @@
             </div>
         </div>
     </div>
+    
+    <!-- Image Zoom Modal -->
+    <div class="hidden" id="image-modal-overlay">
+        <div id="image-modal-content">
+            <img id="zoomed-image" src="" alt="Zoomed Question Image">
+            <button id="close-image-btn">×</button>
+        </div>
+    </div>
+
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
@@ -279,23 +353,38 @@
                 document.getElementById('question-subject').textContent = q.subject;
                 document.getElementById('question-text').innerHTML = q.questionText;
 
+                // --- IMAGE RENDERING LOGIC ---
+                const imageContainer = document.getElementById('image-container');
+                imageContainer.innerHTML = '';
+                
+                if (q.questionImageUrl) {
+                    const img = document.createElement('img');
+                    img.src = q.questionImageUrl;
+                    img.className = 'question-image';
+                    img.alt = `Question ${index + 1} Image`;
+                    
+                    // Add click listener for zoom modal
+                    img.addEventListener('click', () => this.openImageModal(q.questionImageUrl));
+                    
+                    imageContainer.appendChild(img);
+                }
+                // --- END IMAGE RENDERING LOGIC ---
+
+
                 const optionsContainer = document.getElementById('options-container');
                 optionsContainer.innerHTML = ''; // Clear previous content
 
                 // Check for fill-in-the-blanks format
                 if (q.options.length === 1 && q.options[0] === 'nil') {
-                    // Render a numerical input field
                     const input = document.createElement('input');
                     input.type = 'number';
                     input.className = 'fill-in-the-blanks-input';
                     input.placeholder = 'Enter your answer...';
                     
-                    // Pre-fill with a previously saved answer if it exists
                     if (this.testSession.answers[index] !== undefined) {
                         input.value = this.testSession.answers[index];
                     }
                     
-                    // Capture input and save the answer
                     input.addEventListener('input', (e) => {
                         this.testSession.answers[index] = e.target.value !== '' ? parseFloat(e.target.value) : undefined;
                         this.updateQuestionNavigation();
@@ -303,7 +392,6 @@
                     });
                     
                     optionsContainer.appendChild(input);
-                    // FIXED: Do not disable Save & Next button for fill-in-the-blanks questions
                     document.getElementById('save-next-btn').disabled = false;
                 } else {
                     // Render regular multiple-choice options
@@ -325,6 +413,20 @@
                 this.startQuestionTimer();
                 this.saveSession();
             }
+
+            // --- IMAGE MODAL FUNCTIONS ---
+            openImageModal(imageUrl) {
+                const modalOverlay = document.getElementById('image-modal-overlay');
+                const zoomedImage = document.getElementById('zoomed-image');
+                zoomedImage.src = imageUrl;
+                modalOverlay.classList.remove('hidden');
+            }
+
+            closeImageModal() {
+                document.getElementById('image-modal-overlay').classList.add('hidden');
+            }
+            // --- END IMAGE MODAL FUNCTIONS ---
+
 
             selectOption(optionIndex) {
                 this.testSession.answers[this.currentQuestionIndex] = optionIndex;
@@ -396,13 +498,11 @@
                 const subjectWise = {};
                 const incorrectTopics = [];
                 
-                // Initialize subjectWise from the main test data
                 testData.subjects.forEach(sub => {
                     subjectWise[sub] = { correct: 0, incorrect: 0, unanswered: 0, total: 0 };
                 });
 
                 testData.questions_data.forEach((q, i) => {
-                    // Check if subject exists before accessing its properties
                     if (subjectWise[q.subject]) {
                         subjectWise[q.subject].total++;
                     }
@@ -413,10 +513,8 @@
                     if (userAnswer !== undefined && userAnswer !== null && userAnswer !== '') {
                         let isCorrect = false;
                         if (isFillInTheBlanks) {
-                            // Compare numerical values for fill-in-the-blanks
                             isCorrect = parseFloat(userAnswer) === q.correctAnswer;
                         } else {
-                            // Compare index for multiple-choice
                             isCorrect = userAnswer === q.correctAnswer;
                         }
 
@@ -461,7 +559,6 @@
                 
                 document.getElementById('prev-btn').addEventListener('click', () => this.navigateToQuestion(this.currentQuestionIndex - 1));
                 
-                // Simplified Save & Next button logic
                 document.getElementById('save-next-btn').addEventListener('click', () => {
                     this.navigateToQuestion(this.currentQuestionIndex + 1);
                 });
@@ -493,6 +590,15 @@
 
                 document.getElementById('mobile-nav-toggle').addEventListener('click', () => document.getElementById('question-nav').classList.add('open'));
                 document.getElementById('nav-toggle-close').addEventListener('click', () => document.getElementById('question-nav').classList.remove('open'));
+                
+                // --- IMAGE MODAL LISTENERS ---
+                document.getElementById('close-image-btn').addEventListener('click', () => this.closeImageModal());
+                document.getElementById('image-modal-overlay').addEventListener('click', (e) => {
+                    if (e.target.id === 'image-modal-overlay') {
+                        this.closeImageModal();
+                    }
+                });
+                // --- END IMAGE MODAL LISTENERS ---
             }
         }
 

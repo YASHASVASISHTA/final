@@ -87,9 +87,7 @@
         }
 
         @media (max-width: 768px) {
-            /* Hide desktop navigation elements on small screens */
             .nav-links, .nav-user { display: none; }
-            /* Show the mobile menu button */
             .mobile-menu-btn { display: block; }
         }
     </style>
@@ -109,11 +107,8 @@
                 <div class="user-avatar" id="user-avatar">U</div>
                 <button class="logout-btn" id="logout-btn">Logout</button>
             </div>
-            <!-- Mobile Menu Button - Shown only on small screens -->
             <button class="mobile-menu-btn" id="mobile-menu-btn">&#9776;</button>
         </div>
-        
-        <!-- Mobile Menu Dropdown Content -->
         <div class="mobile-menu" id="mobile-menu">
             <ul class="mobile-nav-links">
                 <li><a href="dashboard.html" class="nav-link">Dashboard</a></li>
@@ -127,7 +122,7 @@
     </nav>
     <main class="main-container">
         <header class="page-header">
-            <h1 class="page-title">Formulas</h1>
+            <h1 class="page-title">Formulas and Revision Notes</h1>
             <p style="color: var(--muted-foreground);">Download your essential study material sheets below.</p>
         </header>
 
@@ -137,8 +132,8 @@
             <!-- PHYSICS Download Card -->
             <div class="download-card">
                 <span class="download-title">PHYSICS Formulas</span>
-                <p style="color: var(--muted-foreground); margin-bottom: 1rem; font-size: 0.95rem;">All important formulas from NCERT</p>
-                <a href="PHYSICS.pdf" download class="download-btn">
+                <p style="color: var(--muted-foreground); margin-bottom: 1rem; font-size: 0.95rem;">Key equations for Mechanics, E&M, and Optics.</p>
+                <a href="PHYSICS.PDF" download class="download-btn">
                     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
                     Download PDF
                 </a>
@@ -147,8 +142,8 @@
             <!-- CHEMISTRY Download Card -->
             <div class="download-card">
                 <span class="download-title">CHEMISTRY Formulas</span>
-                <p style="color: var(--muted-foreground); margin-bottom: 1rem; font-size: 0.95rem;">All important formulas from NCERT</p>
-                <a href="CHEMISTRY.pdf" download class="download-btn">
+                <p style="color: var(--muted-foreground); margin-bottom: 1rem; font-size: 0.95rem;">Chemical equations, constants, and reaction schemes.</p>
+                <a href="CHEMISTRY.PDF" download class="download-btn">
                     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
                     Download PDF
                 </a>
@@ -157,8 +152,8 @@
             <!-- MATHS Download Card -->
             <div class="download-card">
                 <span class="download-title">MATHS Formulas</span>
-                <p style="color: var(--muted-foreground); margin-bottom: 1rem; font-size: 0.95rem;">All important formulas from NCERT</p>
-                <a href="MATHS.pdf" download class="download-btn">
+                <p style="color: var(--muted-foreground); margin-bottom: 1rem; font-size: 0.95rem;">All essential theorems, identities, and integral tables.</p>
+                <a href="MATHS.PDF" download class="download-btn">
                     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
                     Download PDF
                 </a>
@@ -167,8 +162,8 @@
             <!-- EXTRA FORMULAS Download Card -->
             <div class="download-card">
                 <span class="download-title">EXTRA FORMULAS</span>
-                <p style="color: var(--muted-foreground); margin-bottom: 1rem; font-size: 0.95rem;">Useful for Competitive exams like JEE,NEET and KCET</p>
-                <a href="EXTRA FORMULAS.pdf" download class="download-btn">
+                <p style="color: var(--muted-foreground); margin-bottom: 1rem; font-size: 0.95rem;">Supplementary resources and quick reference charts.</p>
+                <a href="EXTRA FORMULAS.PDF" download class="download-btn">
                     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
                     Download PDF
                 </a>
@@ -176,28 +171,23 @@
         </div>
         
         <!-- Placeholder for future revision notes content -->
-       
+        <h2 style="font-size: 1.5rem; color: var(--foreground); margin-top: 3rem; margin-bottom: 1.5rem; text-align: center; border-bottom: 2px solid var(--border); padding-bottom: 10px;">Future Revision Content</h2>
+      
     </main>
 
     <script>
+        // No more tab switching logic needed!
+        // Keeping only necessary event listeners for mobile menu and Firebase.
         document.addEventListener('DOMContentLoaded', () => {
-            const mobileMenuBtn = document.getElementById('mobile-menu-btn');
-            const mobileMenu = document.getElementById('mobile-menu');
-
-            // Toggle logic for the mobile menu button
-            if (mobileMenuBtn && mobileMenu) {
-                mobileMenuBtn.addEventListener('click', () => {
-                    mobileMenu.classList.toggle('active');
-                });
-            }
+            document.getElementById('mobile-menu-btn').addEventListener('click', () => {
+                document.getElementById('mobile-menu').classList.toggle('active');
+            });
         });
     </script>
      <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
         import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
         
-        // This is a placeholder config based on your previous input. 
-        // In a real environment, these would be provided globally.
         const firebaseConfig = {
           apiKey: "AIzaSyCQ34ZAWWCMuaQ01fvX0sI-YdklK0mJ5aw",
           authDomain: "testseries-38752.firebaseapp.com",
@@ -215,6 +205,7 @@
                 const userName = user.displayName || user.email || 'User';
                 document.getElementById('user-avatar').textContent = userName.charAt(0).toUpperCase();
             } else {
+                // Assuming login.html exists based on the original template
                 window.location.href = 'login.html'; 
             }
         });
@@ -223,9 +214,9 @@
         document.getElementById('logout-btn').addEventListener('click', handleLogout);
         document.getElementById('mobile-logout-btn').addEventListener('click', handleLogout);
 
-        // NOTE: The mobile menu toggle logic has been moved to the non-module script above for immediate DOM access.
+        document.getElementById('mobile-menu-btn').addEventListener('click', () => {
+            document.getElementById('mobile-menu').classList.toggle('active');
+        });
     </script>
 </body>
 </html>
-
-
