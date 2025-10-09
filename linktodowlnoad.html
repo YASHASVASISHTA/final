@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google Drive Direct Link Converter</title>
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom styles for the app background and font */
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #f0f4f8 0%, #e0e7f0 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        /* Custom utility for better focus state */
+        .focus-ring:focus {a
+            outline: 2px solid transparent;
+            outline-offset: 2px;
+            box-shadow: 0 0 0 4px rgba(66, 153, 225, 0.5); /* blue-500 equivalent */
+        }
+    </style>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary': '#4299e1', // blue-500
+                        'secondary': '#63b3ed', // blue-400
+                    },
+                }
+            }
+        }
+
+        // Function to show a temporary feedback message
+        function showFeedback(message, isError = false) {
+            const feedbackBox = document.getElementById('feedbackBox');
+            feedbackBox.textContent = message;
+            feedbackBox.classList.remove('hidden', 'bg-red-500', 'bg-green-500');
+            feedbackBox.classList.add(isError ? 'bg-red-500' : 'bg-green-500', 'animate-pulse');
+
+            setTimeout(() => {
+                feedbackBox.classList.add('hidden');
+                feedbackBox.classList.remove('animate-pulse');
+            }, 3000);
+        }
+
+        // Function to extract the file ID from various Google Drive link formats
+        function extractFileId(url) {
+            if (!url) return null;
+
+            // 1. Standard share link: /d/FILE_ID/view
+            const regex1 = /\/d\/([a-zA-Z0-9_-]+)/;
+            let match = url.match(regex1);
+            if (match && match[1]) {
+                return match[1];
+            }
+
+            // 2. Old/query param link: ?id=FILE_ID
+            const regex2 = /[?&]id=([a-zA-Z0-9_-]+)/;
+            match = url.match(regex2);
+            if (match && match[1]) {
+                return match[1];
+            }
+
+            return null;
+        }
+
+        // Main conversion logic
+        function convertToDownloadLink() {
+            const inputElement = document.getElementById('driveLinkInput');
+            const outputElement = document.getElementById('downloadLinkOutput');
+            const copyButton = document.getElementById('copyButton');
+            const originalUrl = inputElement.value.trim();
+
+            // Reset output and buttons
+            outputElement.textContent = 'Paste a Google Drive sharing link above...';
+            outputElement.classList.add('text-gray-500');
+            copyButton.classList.add('opacity-50', 'cursor-not-allowed');
+            copyButton.disabled = true;
+
+            if (!originalUrl) {
+                showFeedback('Please paste a Google Drive link first.', true);
+                return;
+            }
+
+            const fileId = extractFileId(originalUrl);
+
+            if (fileId) {
+                const downloadUrl = `https://drive.google.com/uc?export=download&id=${fileId}`;
+                outputElement.textContent = downloadUrl;
+                outputElement.classList.remove('text-gray-500');
+                copyButton.classList.remove('opacity-50', 'cursor-not-allowed');
+                copyButton.disabled = false;
+                showFeedback('Link successfully converted!');
+            } else {
+                outputElement.textContent = 'Error: Could not find a valid File ID in the link.';
+                outputElement.classList.add('text-gray-500');
+                showFeedback('Invalid Google Drive link format.', true);
+            }
+        }
+
+        // Function to copy the output text to clipboard
+        function copyToClipboard() {
+            const outputElement = document.getElementById('downloadLinkOutput');
+            const textToCopy = outputElement.textContent;
+
+            // Check if the output is a valid converted link
+            if (textToCopy.startsWith('https://drive.google.com/uc?export=download&id=') || textToCopy.startsWith('https://')) {
+                // Use document.execCommand('copy') for better compatibility within iFrames
+                const tempInput = document.createElement('textarea');
+                tempInput.value = textToCopy;
+                document.body.appendChild(tempInput);
+                tempInput.select();
+                try {
+                    document.execCommand('copy');
+                    showFeedback('Download link copied to clipboard!');
+                } catch (err) {
+                    showFeedback('Failed to copy. Please copy manually.', true);
+                }
+                document.body.removeChild(tempInput);
+            } else {
+                showFeedback('Nothing valid to copy yet.', true);
+            }
+        }
+
+        // Attach event listeners when the window loads
+        window.onload = function() {
+            document.getElementById('convertButton').addEventListener('click', convertToDownloadLink);
+            document.getElementById('copyButton').addEventListener('click', copyToClipboard);
+
+            // Enable conversion on Enter key press in the input field
+            document.getElementById('driveLinkInput').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    convertToDownloadLink();
+                }
+            });
+        };
+    </script>
+</head>
+<body class="p-4 sm:p-8">
+
+    <!-- Application Card Container -->
+    <div class="w-full max-w-xl bg-white p-6 sm:p-8 rounded-xl shadow-2xl transition-all duration-300 hover:shadow-primary/50">
+
+        <h1 class="text-3xl font-extrabold text-gray-800 mb-2 border-b-2 border-primary pb-2">
+            🔗 Drive Link Converter
+        </h1>
+        <p class="text-gray-600 mb-6">
+            Paste your Google Drive "sharing" link to get a direct download link.
+        </p>
+
+        <!-- Feedback Message Box -->
+        <div id="feedbackBox" class="hidden absolute top-4 right-4 p-3 rounded-lg text-white font-semibold shadow-lg transition-all duration-500 z-50">
+            Conversion successful!
+        </div>
+        
+        <!-- Input Section -->
+        <div class="mb-6">
+            <label for="driveLinkInput" class="block text-sm font-medium text-gray-700 mb-2">
+                Google Drive Share Link
+            </label>
+            <input 
+                type="url" 
+                id="driveLinkInput" 
+                placeholder="e.g., https://drive.google.com/file/d/FILE_ID/view?usp=sharing" 
+                class="w-full p-3 border border-gray-300 rounded-lg focus:border-primary focus-ring transition duration-200 shadow-inner"
+            >
+        </div>
+
+        <!-- Conversion Button -->
+        <button 
+            id="convertButton" 
+            class="w-full py-3 px-6 bg-primary text-white font-bold rounded-lg shadow-lg hover:bg-secondary transition duration-300 transform hover:scale-[1.01] focus-ring"
+        >
+            Convert to Download Link
+        </button>
+
+        <!-- Output Section -->
+        <div class="mt-8 border-t border-gray-200 pt-6">
+            <h2 class="text-xl font-semibold text-gray-800 mb-3 flex items-center">
+                Download Link Result
+            </h2>
+
+            <div class="relative">
+                <p 
+                    id="downloadLinkOutput" 
+                    class="w-full min-h-[48px] p-3 break-all bg-gray-100 border border-gray-300 rounded-lg text-gray-500 text-sm overflow-auto select-all"
+                >
+                    Paste a Google Drive sharing link above...
+                </p>
+                
+                <!-- Copy Button -->
+                <button 
+                    id="copyButton" 
+                    disabled 
+                    class="absolute top-1/2 right-2 transform -translate-y-1/2 p-2 bg-gray-300 text-gray-800 rounded-md hover:bg-gray-400 transition duration-150 opacity-50 cursor-not-allowed disabled:cursor-not-allowed disabled:hover:bg-gray-300"
+                    title="Copy Link"
+                >
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                        <path d="M8 3a1 1 0 011-1h2a1 1 0 110 2H9a1 1 0 01-1-1z" />
+                        <path d="M6 3a2 2 0 00-2 2v11a2 2 0 002 2h8a2 2 0 002-2V5a2 2 0 00-2-2 1 1 0 01-2 0H8a1 1 0 01-1-1zM9 10a1 1 0 000 2h2a1 1 0 100-2H9z" />
+                    </svg>
+                </button>
+            </div>
+            
+            <p class="text-xs text-gray-500 mt-2">Note: This link uses the Google Drive file ID to create a direct download URL.</p>
+        </div>
+
+    </div>
+
+</body>
+</html>
